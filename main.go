@@ -5,13 +5,19 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	var name = "World"
+	if value, found := os.LookupEnv("HELLO_WHO"); found {
+		name = value
+	}
+
 	w.WriteHeader(http.StatusOK)
 	fmt.Println(fmt.Sprintf("request received from %s", r.RemoteAddr))
-	fmt.Fprintf(w, "Hello World")
+	fmt.Fprintf(w, fmt.Sprintf("Hello %s", name))
 }
 
 func main() {

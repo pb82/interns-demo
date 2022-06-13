@@ -1,7 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: interns-demo
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: interns-demo
+data:
+  HELLO_WHO: "Interns"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: interns-demo
+  namespace: interns-demo
 spec:
   replicas: 1
   selector:
@@ -14,6 +28,9 @@ spec:
     spec:
       containers:
         - name: interns-demo
+          envFrom:
+            - configMapRef:
+                name: app-config
           image: quay.io/pb82/interns-demo:latest
           ports:
             - containerPort: 3000
@@ -28,6 +45,7 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
+      name: http
   type: ClusterIP
   selector:
     app: interns-demo
@@ -38,10 +56,9 @@ metadata:
   name: interns-demo
   namespace: interns-demo
 spec:
-  host: interns-demo-interns-demo.apps-crc.testing
   to:
     kind: Service
     name: interns-demo
   port:
-    targetPort: 3000
+    targetPort: http
   wildcardPolicy: None

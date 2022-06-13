@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interns-demo
+  namespace: interns-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interns-demo
+  template:
+    metadata:
+      labels:
+        app: interns-demo
+    spec:
+      containers:
+        - name: interns-demo
+          image: quay.io/pb82/interns-demo:latest
+          envFrom:
+            - configMapRef:
+                name: app-config
+          ports:
+            - containerPort: 3000

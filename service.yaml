@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: interns-demo
+  namespace: interns-demo
+spec:
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      name: http
+  type: ClusterIP
+  selector:
+    app: interns-demo
