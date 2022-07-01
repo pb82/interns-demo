@@ -10,7 +10,7 @@ import (
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	var name = "World"
+	var name = "Test"
 	if value, found := os.LookupEnv("HELLO_WHO"); found {
 		name = value
 	}
